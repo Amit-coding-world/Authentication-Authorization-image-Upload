@@ -1,6 +1,7 @@
 import generateToken from "../config/token.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import uploadOnCloudinary from '../config/cloudinary.js';
 
 export const signUp = async (req, res) => {
   try {
@@ -9,6 +10,11 @@ export const signUp = async (req, res) => {
 
     if (!firstName || !lastName || !email || !password || !userName) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    let profileImage;
+    if (req.file) {
+      profileImage = await uploadOnCloudinary(req.file.path);
     }
 
     if (existUser) {
@@ -23,6 +29,7 @@ export const signUp = async (req, res) => {
       email,
       password: hashedPassword,
       userName,
+      profileImage: profileImage?.url || undefined,
     });
     let token;
     try {
@@ -45,6 +52,7 @@ export const signUp = async (req, res) => {
           lastName,
           email,
           userName,
+          profileImage
         },
       }
     );
@@ -111,3 +119,4 @@ export const logout = async (req, res) => {
     return res.status(500).json({ message: "internal server error" });
   }
 };
+

@@ -15,31 +15,42 @@ function SignUp() {
 
  
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    try {
-      let data = await axios.post(
-        `${serverUrl}/api/signup`,
-        {
-          firstName,
-          lastName,
-          userName,
-          email,
-          password,
-        },
-        { withCredentials: true }
-      );
-      alert("Sign Up Successful");
-      // Reset form fields
-      setFirstName("");
-      setLastName("");
-      setUserName("");
-      setEmail("");
-      setPassword("");
-    } catch (error) {
-      alert(error.response.data.message);
+const handleSignUp = async (e) => {
+  e.preventDefault();
+  try {
+    let formdata = new FormData();
+    formdata.append("firstName", firstName);
+    formdata.append("lastName", lastName);
+    formdata.append("userName", userName);
+    formdata.append("email", email);
+    formdata.append("password", password);
+    if (backendImage) {
+      formdata.append("profileImage", backendImage);
     }
-  };
+
+    let res = await axios.post(`${serverUrl}/api/signup`, formdata, {
+      withCredentials: true,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    alert("Sign Up Successful");
+
+    // Reset form fields
+    setFirstName("");
+    setLastName("");
+    setUserName("");
+    setEmail("");
+    setPassword("");
+    setFrontendImage(dp);
+    setBackendImage(null);
+
+    // Optional: redirect
+    navigate("/login");
+  } catch (error) {
+    alert(error.response?.data?.message || "Signup failed");
+  }
+};
+
 
   let file=useRef(null)
   let [frontendImage,setFrontendImage]=useState(dp);
