@@ -1,70 +1,69 @@
 import { dataContext } from "../context/UserContext.jsx";
 import dp from "../assets/dp.png";
-import { useState, useContext,useRef } from "react";
+import { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-  let { serverUrl } = useContext(dataContext);
-  let navigate=useNavigate();
+  let { serverUrl, userData, setUserData, getUserdata } = useContext(dataContext);
+  let navigate = useNavigate();
   let [firstName, setFirstName] = useState("");
   let [lastName, setLastName] = useState("");
   let [userName, setUserName] = useState("");
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
 
- 
 
-const handleSignUp = async (e) => {
-  e.preventDefault();
-  try {
-    let formdata = new FormData();
-    formdata.append("firstName", firstName);
-    formdata.append("lastName", lastName);
-    formdata.append("userName", userName);
-    formdata.append("email", email);
-    formdata.append("password", password);
-    if (backendImage) {
-      formdata.append("profileImage", backendImage);
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      let formdata = new FormData();
+      formdata.append("firstName", firstName);
+      formdata.append("lastName", lastName);
+      formdata.append("userName", userName);
+      formdata.append("email", email);
+      formdata.append("password", password);
+      if (backendImage) {
+        formdata.append("profileImage", backendImage);
+      }
+
+      let data = await axios.post(`${serverUrl}/api/signup`, formdata, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      await getUserdata()
+      navigate("/");
+
+      alert("Sign Up Successful");
+
+      // Reset form fields
+      setFirstName("");
+      setLastName("");
+      setUserName("");
+      setEmail("");
+      setPassword("");
+      setFrontendImage(dp);
+      setBackendImage(null);
+    } catch (error) {
+      alert(error.response?.data?.message || "Signup failed");
     }
-
-    let res = await axios.post(`${serverUrl}/api/signup`, formdata, {
-      withCredentials: true,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    alert("Sign Up Successful");
-
-    // Reset form fields
-    setFirstName("");
-    setLastName("");
-    setUserName("");
-    setEmail("");
-    setPassword("");
-    setFrontendImage(dp);
-    setBackendImage(null);
-
-    // Optional: redirect
-    navigate("/login");
-  } catch (error) {
-    alert(error.response?.data?.message || "Signup failed");
-  }
-};
+  };
 
 
-  let file=useRef(null)
-  let [frontendImage,setFrontendImage]=useState(dp);
-  let [backendImage,setBackendImage]=useState(null);
+  let file = useRef(null)
+  let [frontendImage, setFrontendImage] = useState(dp);
+  let [backendImage, setBackendImage] = useState(null);
 
-  function handleImage(e){
-    let file =e.target.files[0];
+  function handleImage(e) {
+    let file = e.target.files[0];
     setBackendImage(file); // for backend upload
 
-    let image=URL.createObjectURL(file); // for frontend display using url
+    let image = URL.createObjectURL(file); // for frontend display using url
     setFrontendImage(image);
   }
 
- 
+
 
   return (
     <div className="w-full h-[100vh] bg-black flex justify-center items-center">
@@ -75,11 +74,11 @@ const handleSignUp = async (e) => {
           className="w-[100%] flex flex-col items-center justify-center gap-[20px]"
           onSubmit={handleSignUp}
         >
-          <input type="file" hidden ref={file} onChange={handleImage}/>
+          <input type="file" hidden ref={file} onChange={handleImage} />
 
           <div className="w-[100px] h-[100px] rounded-full bg-white overflow-hidden relative border-2 border-white">
             <img src={frontendImage} alt="dp.png" className="w-[100%] h-[100%]" />
-            <div onClick={()=> {file.current.click()}} className="absolute w-[100%] h-[100%] bg-black top-0 opacity-0 hover:opacity-50 cursor-pointer flex justify-center items-center text-white text-[20px] font-semibold">
+            <div onClick={() => { file.current.click() }} className="absolute w-[100%] h-[100%] bg-black top-0 opacity-0 hover:opacity-50 cursor-pointer flex justify-center items-center text-white text-[20px] font-semibold">
               +
             </div>
           </div>
@@ -125,7 +124,7 @@ const handleSignUp = async (e) => {
           <button className="bg-[#07c7e4] text-black px-[10px] py-[5px] rounded-lg">
             Sign Up
           </button>
-          <p onClick={()=>navigate("/login")} className="text-white cursor-pointer">Already have an account? <span className="text-[#0ed3e1]">Login</span></p>
+          <p onClick={() => navigate("/login")} className="text-white cursor-pointer">Already have an account? <span className="text-[#0ed3e1]">Login</span></p>
         </form>
       </div>
     </div>

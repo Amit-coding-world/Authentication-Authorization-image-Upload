@@ -4,9 +4,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  let { serverUrl } = useContext(dataContext);
+  let { serverUrl, userData, setUserData, getUserdata } = useContext(dataContext);
 
-  let navigate=useNavigate();
+  let navigate = useNavigate();
 
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
@@ -14,15 +14,17 @@ function Login() {
     e.preventDefault();
     try {
       let data = await axios.post(
-        `${serverUrl}/api/login `,
+        `${serverUrl}/api/login`,
         {
           email,
           password,
-        }, 
-          
+        },
+
         { withCredentials: true }
       );
+      await getUserdata()
       alert("Login Successful");
+      navigate("/");
       // Reset form fields
       setEmail("");
       setPassword("");
@@ -40,7 +42,7 @@ function Login() {
           className="w-[100%] flex flex-col items-center justify-center gap-[20px]"
           onSubmit={handleLogin}
         >
-         
+
           <input
             type="email"
             placeholder="email"
@@ -59,8 +61,8 @@ function Login() {
           <button className="bg-[#07c7e4] text-black px-[10px] py-[5px] rounded-lg">
             Login
           </button>
-          <p onClick={()=>navigate("/signup")} className="text-white cursor-pointer">Want to Create new account? <span className="text-[#0ed3e1]">Sign Up</span></p>
-        
+          <p onClick={() => navigate("/signup")} className="text-white cursor-pointer">Want to Create new account? <span className="text-[#0ed3e1]">Sign Up</span></p>
+
         </form>
       </div>
     </div>
