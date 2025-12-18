@@ -1,9 +1,14 @@
-Authentication –
-- Verifies who a user is. ( Login & SignUp using email/password )
+### Authentication
+*   **Definition**: The process of verifying the identity of a user or system.
+*   **Goal**: To answer the question "Who are you?".
+*   **In this Project**: Users prove their identity by providing an email and password.
+*   **Method**: We use **Bcrypt** to verify passwords and issue a **JWT** (JSON Web Token) upon success.
 
-Authorization –
-
-- Determines what a user can access .
+### Authorization
+*   **Definition**: The process of determining if the authenticated user has permission to access specific resources.
+*   **Goal**: To answer the question "What are you allowed to do?".
+*   **In this Project**: Determines if the logged-in user can access the Home page or specific API routes.
+*   **Method**: Middleware checks for a valid **JWT** in the http-only cookie.
 
 
 <br>
