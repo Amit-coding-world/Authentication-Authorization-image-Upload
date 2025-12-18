@@ -24,6 +24,7 @@ function Login() {
       );
       await getUserdata()
       alert("Login Successful");
+      setUserData(data.user || data.data.user); // Handle potential response structure variations
       navigate("/");
       // Reset form fields
       setEmail("");

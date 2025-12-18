@@ -1,15 +1,26 @@
 import { useContext } from 'react'
 import { dataContext } from '../context/UserContext.jsx'
+import { useNavigate } from 'react-router-dom'
+
+import axios from 'axios'
 
 function Home() {
-  let { userData } = useContext(dataContext);
+  let { userData, serverUrl, setUserData, getUserdata } = useContext(dataContext);
+  let navigate = useNavigate();
 
   if (!userData) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="text-xl font-semibold text-gray-700">Loading user data...</div>
-      </div>
-    );
+    navigate("/login");
+  }
+
+  const handleLogOut = async () => {
+    try {
+      await axios.post(`${serverUrl}/api/logout`,{},{withCredentials:true})
+      await getUserdata()
+      setUserData(null)
+      navigate("/login")
+    } catch (error) {
+      alert(error.response.data.message)
+    }
   }
 
   return (
@@ -30,6 +41,9 @@ function Home() {
           </div>
         )}
       </div>
+      <button onClick={handleLogOut} className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-6 hover:bg-blue-600 transition-colors duration-300">
+        Logout
+      </button>
     </div>
   );
 }

@@ -33,6 +33,7 @@ function SignUp() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       await getUserdata()
+      setUserData(data.user || data.data?.user); // Handle variations
       navigate("/");
 
       alert("Sign Up Successful");
