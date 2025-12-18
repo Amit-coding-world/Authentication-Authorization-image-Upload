@@ -91,37 +91,37 @@ erDiagram
 
 ## 🚀 Setup Instructions
 
-### 1. Backend Setup
-Navigate to the `backend` folder:
-```bash
-cd backend
-npm install
-```
-
-Create a `.env` file in `backend/` with the following:
+### 1. Environment Setup
+Create a `.env` file in the `backend/` folder with the following:
 ```env
 PORT=8000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
+# Cloudinary Keys
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
-NODE_ENVIRONMENT=development
+NODE_ENVIRONMENT=production
 ```
 
-Run the server:
-```bash
-npm run dev
-```
+### 2. Run the Application
+You can install dependencies, build the frontend, and start the server with a single command from the **root directory**.
 
-### 2. Frontend Setup
-Navigate to the `frontend` folder:
 ```bash
-cd frontend
-npm install
+npm start
 ```
+*   This command will automatically:
+    1.  Install backend dependencies.
+    2.  Install frontend dependencies.
+    3.  Build the React frontend.
+    4.  Start the Express server on `http://localhost:8000` (serving the built frontend).
 
-Run the client:
-```bash
-npm run dev
-```
+
+    # testing:-
+
+    ```
+
+    1.  email- admin@gmail.com
+    2.  password- 123456
+
+    ```
